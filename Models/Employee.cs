@@ -13,6 +13,11 @@ namespace VetClinic.Models
         [Display(Name = "Hire Date")]
         public DateTime HireDate { get; set; }
 
+        public int EmployeeTypeId { get; set; }
+
         public virtual ICollection<Appointment> Appointments { get; set; }
+        
+        [Display(Name = "Role")]
+        public virtual EmployeeType EmployeeType { get; set; }
     }
 }

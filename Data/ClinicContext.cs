@@ -23,6 +23,7 @@ namespace VetClinic.Data
         public DbSet<PersonPhone> PersonPhones { get; set; }
         public DbSet<PersonEmail> PersonEmails { get; set; }
         public DbSet<ClientAnimal> ClientAnimals { get; set; }
+        public DbSet<EmployeeType> EmployeeTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,6 +48,7 @@ namespace VetClinic.Data
             modelBuilder.Entity<PersonPhone>().ToTable("PersonPhone");
             modelBuilder.Entity<PersonEmail>().ToTable("PersonEmail");
             modelBuilder.Entity<ClientAnimal>().ToTable("ClientAnimal");
+            modelBuilder.Entity<EmployeeType>().ToTable("EmployeeType");
 
 
         }

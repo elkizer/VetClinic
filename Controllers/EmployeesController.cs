@@ -7,26 +7,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VetClinic.Data;
 using VetClinic.Models;
-using VetClinic.ViewModels;
 
 namespace VetClinic.Controllers
 {
-    public class ClientsController : Controller
+    public class EmployeesController : Controller
     {
         private readonly ClinicContext _context;
 
-        public ClientsController(ClinicContext context)
+        public EmployeesController(ClinicContext context)
         {
             _context = context;
         }
 
-        // GET: Clients
+        // GET: Employees
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Clients.ToListAsync());
+            var clinicContext = _context.Employees.Include(e => e.EmployeeType);
+            return View(await clinicContext.ToListAsync());
         }
 
-        // GET: Clients/Details/5
+        // GET: Employees/Details/5
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)
@@ -34,47 +34,45 @@ namespace VetClinic.Controllers
                 return NotFound();
             }
 
-            var client = await _context.Clients
-                .Include(c => c.PersonAddresses)
-                .Include(c => c.PersonPhones)
-                .Include(c => c.PersonEmails)
-                .Include(c => c.ClientAnimals)
-                    .ThenInclude(ca => ca.Animal)
-                    .ThenInclude(sp => sp.Species)
-                .AsNoTracking()
+            var employee = await _context.Employees
+                .Include(e => e.EmployeeType)
+                .Include(e => e.PersonAddresses)
+                .Include(e => e.PersonPhones)
+                .Include(e => e.PersonEmails)
                 .FirstOrDefaultAsync(m => m.PersonId == id);
-
-            if (client == null)
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            return View(client);
+            return View(employee);
         }
 
-        // GET: Clients/Create
+        // GET: Employees/Create
         public IActionResult Create()
         {
+            ViewData["EmployeeTypeId"] = new SelectList(_context.EmployeeTypes, "EmployeeTypeId", "EmployeeTypeId");
             return View();
         }
 
-        // POST: Clients/Create
+        // POST: Employees/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PersonId,FirstName,LastName")] Client client)
+        public async Task<IActionResult> Create([Bind("HireDate,EmployeeTypeId,PersonId,FirstName,LastName")] Employee employee)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(client);
+                _context.Add(employee);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(client);
+            ViewData["EmployeeTypeId"] = new SelectList(_context.EmployeeTypes, "EmployeeTypeId", "EmployeeTypeId", employee.EmployeeTypeId);
+            return View(employee);
         }
 
-        // GET: Clients/Edit/5
+        // GET: Employees/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null)
@@ -82,22 +80,23 @@ namespace VetClinic.Controllers
                 return NotFound();
             }
 
-            var client = await _context.Clients.FindAsync(id);
-            if (client == null)
+            var employee = await _context.Employees.FindAsync(id);
+            if (employee == null)
             {
                 return NotFound();
             }
-            return View(client);
+            ViewData["EmployeeTypeId"] = new SelectList(_context.EmployeeTypes, "EmployeeTypeId", "EmployeeTypeId", employee.EmployeeTypeId);
+            return View(employee);
         }
 
-        // POST: Clients/Edit/5
+        // POST: Employees/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("PersonId,FirstName,LastName")] Client client)
+        public async Task<IActionResult> Edit(long id, [Bind("HireDate,EmployeeTypeId,PersonId,FirstName,LastName")] Employee employee)
         {
-            if (id != client.PersonId)
+            if (id != employee.PersonId)
             {
                 return NotFound();
             }
@@ -106,12 +105,12 @@ namespace VetClinic.Controllers
             {
                 try
                 {
-                    _context.Update(client);
+                    _context.Update(employee);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClientExists(client.PersonId))
+                    if (!EmployeeExists(employee.PersonId))
                     {
                         return NotFound();
                     }
@@ -122,10 +121,11 @@ namespace VetClinic.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(client);
+            ViewData["EmployeeTypeId"] = new SelectList(_context.EmployeeTypes, "EmployeeTypeId", "EmployeeTypeId", employee.EmployeeTypeId);
+            return View(employee);
         }
 
-        // GET: Clients/Delete/5
+        // GET: Employees/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null)
@@ -133,30 +133,31 @@ namespace VetClinic.Controllers
                 return NotFound();
             }
 
-            var client = await _context.Clients
+            var employee = await _context.Employees
+                .Include(e => e.EmployeeType)
                 .FirstOrDefaultAsync(m => m.PersonId == id);
-            if (client == null)
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            return View(client);
+            return View(employee);
         }
 
-        // POST: Clients/Delete/5
+        // POST: Employees/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
         {
-            var client = await _context.Clients.FindAsync(id);
-            _context.Clients.Remove(client);
+            var employee = await _context.Employees.FindAsync(id);
+            _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ClientExists(long id)
+        private bool EmployeeExists(long id)
         {
-            return _context.Clients.Any(e => e.PersonId == id);
+            return _context.Employees.Any(e => e.PersonId == id);
         }
     }
 }

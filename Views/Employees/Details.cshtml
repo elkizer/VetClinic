@@ -1,0 +1,97 @@
+﻿@model VetClinic.Models.Employee
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Employee</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.HireDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.HireDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EmployeeType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EmployeeType.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PersonAddresses)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.PersonAddresses.Count > 0)
+            {
+                foreach (var item in Model.PersonAddresses)
+                {
+                    <div>
+                        @Html.DisplayFor(modelItem => item.AddressLine1) @Html.DisplayFor(modelItem => item.AddressLine2), @Html.DisplayFor(modelItem => item.City) @Html.DisplayFor(modelItem => item.State) @Html.DisplayFor(modelItem => item.PostalCode)
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-info col-sm-5">No addresses on file for this client.</div>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PersonPhones)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.PersonPhones.Count > 0)
+            {
+                foreach (var item in Model.PersonPhones)
+                {
+                    <div>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-info col-sm-5">No phone numbers on file for this client.</div>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PersonEmails)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.PersonEmails.Count > 0)
+            {
+                foreach (var item in Model.PersonEmails)
+                {
+                    <div>
+                        @Html.DisplayFor(modelItem => item.EmailAddress)
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-info col-sm-5">No email addresses on file for this client.</div>
+            }
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.PersonId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
