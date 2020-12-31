@@ -19,15 +19,36 @@ namespace VetClinic.Data
         public DbSet<Client> Clients { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Person> Persons { get; set; }
+        public DbSet<PersonAddress> PersonAddresses { get; set; }
+        public DbSet<PersonPhone> PersonPhones { get; set; }
+        public DbSet<PersonEmail> PersonEmails { get; set; }
+        public DbSet<ClientAnimal> ClientAnimals { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ClientAnimal>()
+        .HasKey(ca => new { ca.ClientId, ca.AnimalId });
+            modelBuilder.Entity<ClientAnimal>()
+                .HasOne(ca => ca.Client)
+                .WithMany(c => c.ClientAnimals)
+                .HasForeignKey(ca => ca.ClientId);
+            modelBuilder.Entity<ClientAnimal>()
+                .HasOne(ca => ca.Animal)
+                .WithMany(c => c.ClientAnimals)
+                .HasForeignKey(ca => ca.AnimalId);
+
             modelBuilder.Entity<Animal>().ToTable("Animal");
             modelBuilder.Entity<Species>().ToTable("Species");
             modelBuilder.Entity<Appointment>().ToTable("Appointment");
             modelBuilder.Entity<Client>().ToTable("Client");
             modelBuilder.Entity<Employee>().ToTable("Employee");
             modelBuilder.Entity<Person>().ToTable("Person");
+            modelBuilder.Entity<PersonAddress>().ToTable("PersonAdress");
+            modelBuilder.Entity<PersonPhone>().ToTable("PersonPhone");
+            modelBuilder.Entity<PersonEmail>().ToTable("PersonEmail");
+            modelBuilder.Entity<ClientAnimal>().ToTable("ClientAnimal");
+
+
         }
     }
 }

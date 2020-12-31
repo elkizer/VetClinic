@@ -9,7 +9,7 @@ namespace VetClinic.Models
 {
     public abstract class Person
     {
-        public long Id { get; set; }
+        public long PersonId { get; set; }
 
         [Required]
         [StringLength(50, ErrorMessage = "First name must be longer than 50 characters.")]
@@ -30,5 +30,9 @@ namespace VetClinic.Models
                 return LastName + ", " + FirstName;
             }
         }
+
+        public virtual ICollection<PersonAddress> PersonAddresses { get; set; }
+        public virtual ICollection<PersonPhone> PersonPhones { get; set; }
+        public virtual ICollection<PersonEmail> PersonEmails { get; set; }
     }
 }

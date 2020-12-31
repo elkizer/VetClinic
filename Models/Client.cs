@@ -7,7 +7,8 @@ namespace VetClinic.Models
 {
     public class Client : Person
     {
-        public virtual ICollection<Animal> Animals { get; set; }
         public virtual ICollection<Appointment> Appointments { get; set; }
+
+        public virtual ICollection<ClientAnimal> ClientAnimals { get; set; }
     }
 }

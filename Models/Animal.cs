@@ -8,8 +8,10 @@ namespace VetClinic.Models
 {
     public class Animal
     {
-        public long ID { get; set; }
-        public int SpeciesID { get; set; }
+        public long AnimalId { get; set; }
+        
+        public int SpeciesId { get; set; }
+        
         public string Name { get; set; }
 
         [DataType(DataType.Date)]
@@ -19,7 +21,7 @@ namespace VetClinic.Models
 
         public string Notes { get; set; }
 
-        public Species Species { get; set; }
-        public Client Client { get; set; }
+        public virtual Species Species { get; set; }
+        public virtual ICollection<ClientAnimal> ClientAnimals { get; set; }
     }
 }

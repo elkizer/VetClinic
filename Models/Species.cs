@@ -7,7 +7,7 @@ namespace VetClinic.Models
 {
     public class Species
     {
-        public int ID { get; set; }
+        public int SpeciesId { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

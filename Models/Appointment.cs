@@ -8,18 +8,19 @@ namespace VetClinic.Models
 {
     public class Appointment
     {
-        public long ID { get; set; }
-        public long ClientID { get; set; }
-        public long AnimalID { get; set; }
-        public long EmployeeID { get; set; }
+        public long AppointmentId { get; set; }
+        public long ClientId { get; set; }
+        public long AnimalId { get; set; }
+        public long EmployeeId { get; set; }
         
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Appointment Date")]
         public DateTime AppointmentDate { get; set; }
         public string Reason { get; set; }
 
-        public Client Client { get; set; }
-        public Animal Animal { get; set; }
-        public Employee Employee { get; set; }
+        public virtual Client Client { get; set; }
+        public virtual Animal Animal { get; set; }
+        public virtual Employee Employee { get; set; }
     }
 }

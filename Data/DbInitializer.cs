@@ -56,16 +56,21 @@ namespace VetClinic.Data
 
             var animals = new Animal[]
             {
-                new Animal{SpeciesID = 1, Name = "Henry", BirthDate = DateTime.Parse("2018-08-01") },
-                new Animal{SpeciesID = 1, Name = "Mudge", BirthDate = DateTime.Parse("2020-09-01") },
-                new Animal{SpeciesID = 1, Name = "Nash", BirthDate = DateTime.Parse("2017-05-10") },
-                new Animal{SpeciesID = 2, Name = "Kity", BirthDate = DateTime.Parse("2010-04-01") },
+                new Animal{SpeciesId = 1, Name = "Henry", BirthDate = DateTime.Parse("2018-08-01") },
+                new Animal{SpeciesId = 1, Name = "Mudge", BirthDate = DateTime.Parse("2020-09-01") },
+                new Animal{SpeciesId = 1, Name = "Nash", BirthDate = DateTime.Parse("2017-05-10") },
+                new Animal{SpeciesId = 2, Name = "Kity", BirthDate = DateTime.Parse("2010-04-01") },
             };
             foreach (Animal a in animals)
             {
                 context.Animals.Add(a);
             }
             context.SaveChanges();
+
+            if (context.Animals.Any())
+            {
+                return;
+            }
 
         }
     }
