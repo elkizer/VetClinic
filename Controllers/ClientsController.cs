@@ -34,7 +34,15 @@ namespace VetClinic.Controllers
             }
 
             var client = await _context.Clients
+                .Include(c => c.PersonAddresses)
+                .Include(c => c.PersonPhones)
+                .Include(c => c.PersonEmails)
+                .Include(c => c.ClientAnimals)
+                    .ThenInclude(ca => ca.Animal)
+                    .ThenInclude(sp => sp.Species)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.PersonId == id);
+
             if (client == null)
             {
                 return NotFound();

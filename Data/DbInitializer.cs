@@ -12,7 +12,7 @@ namespace VetClinic.Data
         {
             context.Database.EnsureCreated();
 
-
+            // Populate species
             if (context.Species.Any())
             {
                 return;
@@ -29,12 +29,7 @@ namespace VetClinic.Data
             }
             context.SaveChanges();
 
-
-            if (context.Clients.Any())
-            {
-                return;
-            }
-
+            // Populate clients
             var clients = new Client[]
             {
                 new Client{ FirstName = "Chelsea", LastName = "Bridges"},
@@ -48,18 +43,25 @@ namespace VetClinic.Data
             }
             context.SaveChanges();
 
-
-            if (context.Animals.Any())
+            
+            // Populate Addresses
+            var addresses = new PersonAddress[]
             {
-                return;
+                new PersonAddress{PersonId = clients.Single( c => c.LastName == "Kizer").PersonId, AddressLine1 = "123 Main St.", AddressLine2 = "Apt. B", City = "Towson", State = "MD", PostalCode = "21212"}
+            };
+            foreach (PersonAddress pa in addresses)
+            {
+                context.PersonAddresses.Add(pa);
             }
+            context.SaveChanges();
 
+            // Populuate animals
             var animals = new Animal[]
             {
-                new Animal{SpeciesId = 1, Name = "Henry", BirthDate = DateTime.Parse("2018-08-01") },
-                new Animal{SpeciesId = 1, Name = "Mudge", BirthDate = DateTime.Parse("2020-09-01") },
-                new Animal{SpeciesId = 1, Name = "Nash", BirthDate = DateTime.Parse("2017-05-10") },
-                new Animal{SpeciesId = 2, Name = "Kity", BirthDate = DateTime.Parse("2010-04-01") },
+                new Animal{SpeciesId = species.Single(s => s.Code == "CANINE").SpeciesId, Name = "Henry", BirthDate = DateTime.Parse("2018-08-01") },
+                new Animal{SpeciesId = species.Single(s => s.Code == "CANINE").SpeciesId, Name = "Mudge", BirthDate = DateTime.Parse("2020-09-01") },
+                new Animal{SpeciesId = species.Single(s => s.Code == "CANINE").SpeciesId, Name = "Nash", BirthDate = DateTime.Parse("2017-05-10") },
+                new Animal{SpeciesId = species.Single(s => s.Code == "FELINE").SpeciesId, Name = "Kitty", BirthDate = DateTime.Parse("2010-04-01") },
             };
             foreach (Animal a in animals)
             {
@@ -67,10 +69,19 @@ namespace VetClinic.Data
             }
             context.SaveChanges();
 
-            if (context.Animals.Any())
+            // Populate ClientAnimals
+            var clientAnimals = new ClientAnimal[]
             {
-                return;
+                new ClientAnimal{ClientId = clients.Single(c => c.LastName == "Bridges").PersonId, AnimalId = animals.Single(a => a.Name == "Henry").AnimalId },
+                new ClientAnimal{ClientId = clients.Single(c => c.LastName == "Bridges").PersonId, AnimalId = animals.Single(a => a.Name == "Mudge").AnimalId },
+                new ClientAnimal{ClientId = clients.Single(c => c.LastName == "Kizer").PersonId, AnimalId = animals.Single(a => a.Name == "Nash").AnimalId },
+                new ClientAnimal{ClientId = clients.Single(c => c.LastName == "Doe").PersonId, AnimalId = animals.Single(a => a.Name == "Kitty").AnimalId },
+            };
+            foreach (ClientAnimal ca in clientAnimals)
+            {
+                context.ClientAnimals.Add(ca);
             }
+            context.SaveChanges();
 
         }
     }

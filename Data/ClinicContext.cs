@@ -43,7 +43,7 @@ namespace VetClinic.Data
             modelBuilder.Entity<Client>().ToTable("Client");
             modelBuilder.Entity<Employee>().ToTable("Employee");
             modelBuilder.Entity<Person>().ToTable("Person");
-            modelBuilder.Entity<PersonAddress>().ToTable("PersonAdress");
+            modelBuilder.Entity<PersonAddress>().ToTable("PersonAddress");
             modelBuilder.Entity<PersonPhone>().ToTable("PersonPhone");
             modelBuilder.Entity<PersonEmail>().ToTable("PersonEmail");
             modelBuilder.Entity<ClientAnimal>().ToTable("ClientAnimal");

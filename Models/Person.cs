@@ -31,8 +31,11 @@ namespace VetClinic.Models
             }
         }
 
+        [Display(Name = "Addresses")]
         public virtual ICollection<PersonAddress> PersonAddresses { get; set; }
+        [Display(Name = "Phone Numbers")]
         public virtual ICollection<PersonPhone> PersonPhones { get; set; }
+        [Display(Name = "Email Addresses")]
         public virtual ICollection<PersonEmail> PersonEmails { get; set; }
     }
 }
