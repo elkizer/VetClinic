@@ -46,9 +46,16 @@ namespace VetClinic.Controllers
         }
 
         // GET: Addresses/Create
-        public IActionResult Create()
+        public IActionResult Create(long? personId)
         {
-            ViewData["PersonId"] = new SelectList(_context.Persons, "PersonId", "FirstName");
+            if(personId != null)
+            {
+                ViewData["PersonId"] = new SelectList(_context.Persons.Where(p => p.PersonId == personId), "PersonId", "FullName");
+            } else
+            {
+                ViewData["PersonId"] = new SelectList(_context.Persons, "PersonId", "FullName");
+            }
+            
             return View();
         }
 
@@ -63,7 +70,7 @@ namespace VetClinic.Controllers
             {
                 _context.Add(personAddress);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Clients", new { id = personAddress.PersonId }, null);
             }
             ViewData["PersonId"] = new SelectList(_context.Persons, "PersonId", "FullName", personAddress.PersonId);
             return View(personAddress);
@@ -116,7 +123,7 @@ namespace VetClinic.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Clients", new { id = personAddress.PersonId }, null);
             }
             ViewData["PersonId"] = new SelectList(_context.Persons, "PersonId", "FirstName", personAddress.PersonId);
             return View(personAddress);
@@ -149,7 +156,7 @@ namespace VetClinic.Controllers
             var personAddress = await _context.PersonAddresses.FindAsync(id);
             _context.PersonAddresses.Remove(personAddress);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "Clients", new { id = personAddress.PersonId }, null);
         }
 
         private bool PersonAddressExists(long id)

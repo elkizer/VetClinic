@@ -50,8 +50,8 @@ namespace VetClinic.Controllers
         // GET: Appointments/Create
         public IActionResult Create()
         {
-            ViewData["AnimalId"] = new SelectList(_context.Animals, "AnimalId", "Name");
             ViewData["ClientId"] = new SelectList(_context.Clients, "PersonId", "FullName");
+            ViewData["AnimalId"] = new SelectList(_context.Animals, "AnimalId", "Name");
             ViewData["EmployeeId"] = new SelectList(_context.Employees, "PersonId", "FullName");
             return View();
         }
