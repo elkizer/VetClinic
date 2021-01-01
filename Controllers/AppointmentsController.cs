@@ -50,9 +50,9 @@ namespace VetClinic.Controllers
         // GET: Appointments/Create
         public IActionResult Create()
         {
-            ViewData["AnimalId"] = new SelectList(_context.Animals, "AnimalId", "AnimalId");
-            ViewData["ClientId"] = new SelectList(_context.Clients, "PersonId", "FirstName");
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "PersonId", "FirstName");
+            ViewData["AnimalId"] = new SelectList(_context.Animals, "AnimalId", "Name");
+            ViewData["ClientId"] = new SelectList(_context.Clients, "PersonId", "FullName");
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "PersonId", "FullName");
             return View();
         }
 
@@ -88,9 +88,9 @@ namespace VetClinic.Controllers
             {
                 return NotFound();
             }
-            ViewData["AnimalId"] = new SelectList(_context.Animals, "AnimalId", "AnimalId", appointment.AnimalId);
-            ViewData["ClientId"] = new SelectList(_context.Clients, "PersonId", "FirstName", appointment.ClientId);
-            ViewData["EmployeeId"] = new SelectList(_context.Employees, "PersonId", "FirstName", appointment.EmployeeId);
+            ViewData["AnimalId"] = new SelectList(_context.Animals, "AnimalId", "Name", appointment.AnimalId);
+            ViewData["ClientId"] = new SelectList(_context.Clients, "PersonId", "FullName", appointment.ClientId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "PersonId", "FullName", appointment.EmployeeId);
             return View(appointment);
         }
 
