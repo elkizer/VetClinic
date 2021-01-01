@@ -15,9 +15,11 @@ namespace VetClinic.Models
         public long PersonId { get; set; }
         
         [StringLength(100)]
+        [Display(Name = "Address Line 1")]
         public string AddressLine1 { get; set; }
 
         [StringLength(100)]
+        [Display(Name = "Address Line 2")]
         public string AddressLine2 { get; set; }
 
         [StringLength(50)]
@@ -27,6 +29,7 @@ namespace VetClinic.Models
         public string State { get; set; }
 
         [StringLength(9)]
+        [Display(Name = "Postal Code")]
         public string PostalCode { get; set; }
 
         public virtual Person Person { get; set; }
