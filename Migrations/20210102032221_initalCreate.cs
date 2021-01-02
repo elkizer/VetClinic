@@ -3,10 +3,25 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace VetClinic.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initalCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "EmployeeType",
+                columns: table => new
+                {
+                    EmployeeTypeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeType", x => x.EmployeeTypeId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Person",
                 columns: table => new
@@ -58,11 +73,18 @@ namespace VetClinic.Migrations
                 columns: table => new
                 {
                     PersonId = table.Column<long>(type: "bigint", nullable: false),
-                    HireDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    HireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EmployeeTypeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employee", x => x.PersonId);
+                    table.ForeignKey(
+                        name: "FK_Employee_EmployeeType_EmployeeTypeId",
+                        column: x => x.EmployeeTypeId,
+                        principalTable: "EmployeeType",
+                        principalColumn: "EmployeeTypeId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Employee_Person_PersonId",
                         column: x => x.PersonId,
@@ -136,11 +158,12 @@ namespace VetClinic.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Animal",
+                name: "ClientAnimal",
                 columns: table => new
                 {
-                    AnimalId = table.Column<long>(type: "bigint", nullable: false)
+                    ClientAnimalId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    ClientId = table.Column<long>(type: "bigint", nullable: false),
                     SpeciesId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -148,9 +171,15 @@ namespace VetClinic.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Animal", x => x.AnimalId);
+                    table.PrimaryKey("PK_ClientAnimal", x => x.ClientAnimalId);
                     table.ForeignKey(
-                        name: "FK_Animal_Species_SpeciesId",
+                        name: "FK_ClientAnimal_Client_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Client",
+                        principalColumn: "PersonId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ClientAnimal_Species_SpeciesId",
                         column: x => x.SpeciesId,
                         principalTable: "Species",
                         principalColumn: "SpeciesId",
@@ -163,26 +192,26 @@ namespace VetClinic.Migrations
                 {
                     AppointmentId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ClientId = table.Column<long>(type: "bigint", nullable: false),
-                    AnimalId = table.Column<long>(type: "bigint", nullable: false),
+                    ClientAnimalId = table.Column<long>(type: "bigint", nullable: false),
                     EmployeeId = table.Column<long>(type: "bigint", nullable: false),
                     AppointmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClientPersonId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Appointment", x => x.AppointmentId);
                     table.ForeignKey(
-                        name: "FK_Appointment_Animal_AnimalId",
-                        column: x => x.AnimalId,
-                        principalTable: "Animal",
-                        principalColumn: "AnimalId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Appointment_Client_ClientId",
-                        column: x => x.ClientId,
+                        name: "FK_Appointment_Client_ClientPersonId",
+                        column: x => x.ClientPersonId,
                         principalTable: "Client",
                         principalColumn: "PersonId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Appointment_ClientAnimal_ClientAnimalId",
+                        column: x => x.ClientAnimalId,
+                        principalTable: "ClientAnimal",
+                        principalColumn: "ClientAnimalId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Appointment_Employee_EmployeeId",
@@ -192,44 +221,15 @@ namespace VetClinic.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ClientAnimal",
-                columns: table => new
-                {
-                    ClientId = table.Column<long>(type: "bigint", nullable: false),
-                    AnimalId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ClientAnimal", x => new { x.ClientId, x.AnimalId });
-                    table.ForeignKey(
-                        name: "FK_ClientAnimal_Animal_AnimalId",
-                        column: x => x.AnimalId,
-                        principalTable: "Animal",
-                        principalColumn: "AnimalId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ClientAnimal_Client_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "Client",
-                        principalColumn: "PersonId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
-                name: "IX_Animal_SpeciesId",
-                table: "Animal",
-                column: "SpeciesId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Appointment_AnimalId",
+                name: "IX_Appointment_ClientAnimalId",
                 table: "Appointment",
-                column: "AnimalId");
+                column: "ClientAnimalId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Appointment_ClientId",
+                name: "IX_Appointment_ClientPersonId",
                 table: "Appointment",
-                column: "ClientId");
+                column: "ClientPersonId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointment_EmployeeId",
@@ -237,9 +237,19 @@ namespace VetClinic.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientAnimal_AnimalId",
+                name: "IX_ClientAnimal_ClientId",
                 table: "ClientAnimal",
-                column: "AnimalId");
+                column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClientAnimal_SpeciesId",
+                table: "ClientAnimal",
+                column: "SpeciesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employee_EmployeeTypeId",
+                table: "Employee",
+                column: "EmployeeTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersonAddress_PersonId",
@@ -263,9 +273,6 @@ namespace VetClinic.Migrations
                 name: "Appointment");
 
             migrationBuilder.DropTable(
-                name: "ClientAnimal");
-
-            migrationBuilder.DropTable(
                 name: "PersonAddress");
 
             migrationBuilder.DropTable(
@@ -275,16 +282,19 @@ namespace VetClinic.Migrations
                 name: "PersonPhone");
 
             migrationBuilder.DropTable(
-                name: "Employee");
+                name: "ClientAnimal");
 
             migrationBuilder.DropTable(
-                name: "Animal");
+                name: "Employee");
 
             migrationBuilder.DropTable(
                 name: "Client");
 
             migrationBuilder.DropTable(
                 name: "Species");
+
+            migrationBuilder.DropTable(
+                name: "EmployeeType");
 
             migrationBuilder.DropTable(
                 name: "Person");

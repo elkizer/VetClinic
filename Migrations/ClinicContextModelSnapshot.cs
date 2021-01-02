@@ -19,32 +19,6 @@ namespace VetClinic.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.1");
 
-            modelBuilder.Entity("VetClinic.Models.Animal", b =>
-                {
-                    b.Property<long>("AnimalId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .UseIdentityColumn();
-
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SpeciesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AnimalId");
-
-                    b.HasIndex("SpeciesId");
-
-                    b.ToTable("Animal");
-                });
-
             modelBuilder.Entity("VetClinic.Models.Appointment", b =>
                 {
                     b.Property<long>("AppointmentId")
@@ -52,13 +26,13 @@ namespace VetClinic.Migrations
                         .HasColumnType("bigint")
                         .UseIdentityColumn();
 
-                    b.Property<long>("AnimalId")
-                        .HasColumnType("bigint");
-
                     b.Property<DateTime>("AppointmentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("ClientId")
+                    b.Property<long>("ClientAnimalId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("ClientPersonId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("EmployeeId")
@@ -69,9 +43,9 @@ namespace VetClinic.Migrations
 
                     b.HasKey("AppointmentId");
 
-                    b.HasIndex("AnimalId");
+                    b.HasIndex("ClientAnimalId");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("ClientPersonId");
 
                     b.HasIndex("EmployeeId");
 
@@ -80,17 +54,54 @@ namespace VetClinic.Migrations
 
             modelBuilder.Entity("VetClinic.Models.ClientAnimal", b =>
                 {
+                    b.Property<long>("ClientAnimalId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<long>("ClientId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("AnimalId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ClientId", "AnimalId");
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("AnimalId");
+                    b.Property<int>("SpeciesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ClientAnimalId");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("SpeciesId");
 
                     b.ToTable("ClientAnimal");
+                });
+
+            modelBuilder.Entity("VetClinic.Models.EmployeeType", b =>
+                {
+                    b.Property<int>("EmployeeTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("EmployeeTypeId");
+
+                    b.ToTable("EmployeeType");
                 });
 
             modelBuilder.Entity("VetClinic.Models.Person", b =>
@@ -225,36 +236,28 @@ namespace VetClinic.Migrations
                 {
                     b.HasBaseType("VetClinic.Models.Person");
 
+                    b.Property<int>("EmployeeTypeId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("HireDate")
                         .HasColumnType("datetime2");
+
+                    b.HasIndex("EmployeeTypeId");
 
                     b.ToTable("Employee");
                 });
 
-            modelBuilder.Entity("VetClinic.Models.Animal", b =>
-                {
-                    b.HasOne("VetClinic.Models.Species", "Species")
-                        .WithMany()
-                        .HasForeignKey("SpeciesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Species");
-                });
-
             modelBuilder.Entity("VetClinic.Models.Appointment", b =>
                 {
-                    b.HasOne("VetClinic.Models.Animal", "Animal")
+                    b.HasOne("VetClinic.Models.ClientAnimal", "ClientAnimal")
                         .WithMany()
-                        .HasForeignKey("AnimalId")
+                        .HasForeignKey("ClientAnimalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VetClinic.Models.Client", "Client")
+                    b.HasOne("VetClinic.Models.Client", null)
                         .WithMany("Appointments")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClientPersonId");
 
                     b.HasOne("VetClinic.Models.Employee", "Employee")
                         .WithMany("Appointments")
@@ -262,30 +265,28 @@ namespace VetClinic.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Animal");
-
-                    b.Navigation("Client");
+                    b.Navigation("ClientAnimal");
 
                     b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("VetClinic.Models.ClientAnimal", b =>
                 {
-                    b.HasOne("VetClinic.Models.Animal", "Animal")
-                        .WithMany("ClientAnimals")
-                        .HasForeignKey("AnimalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("VetClinic.Models.Client", "Client")
                         .WithMany("ClientAnimals")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Animal");
+                    b.HasOne("VetClinic.Models.Species", "Species")
+                        .WithMany()
+                        .HasForeignKey("SpeciesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Client");
+
+                    b.Navigation("Species");
                 });
 
             modelBuilder.Entity("VetClinic.Models.PersonAddress", b =>
@@ -332,16 +333,19 @@ namespace VetClinic.Migrations
 
             modelBuilder.Entity("VetClinic.Models.Employee", b =>
                 {
+                    b.HasOne("VetClinic.Models.EmployeeType", "EmployeeType")
+                        .WithMany()
+                        .HasForeignKey("EmployeeTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("VetClinic.Models.Person", null)
                         .WithOne()
                         .HasForeignKey("VetClinic.Models.Employee", "PersonId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("VetClinic.Models.Animal", b =>
-                {
-                    b.Navigation("ClientAnimals");
+                    b.Navigation("EmployeeType");
                 });
 
             modelBuilder.Entity("VetClinic.Models.Person", b =>

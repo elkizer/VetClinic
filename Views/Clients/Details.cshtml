@@ -142,20 +142,20 @@
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Animal.Name)
+                                    @Html.DisplayFor(modelItem => item.Name)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Animal.BirthDate)
+                                    @Html.DisplayFor(modelItem => item.BirthDate)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Animal.Species.Name)
+                                    @Html.DisplayFor(modelItem => item.Species.Name)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Animal.Notes)
+                                    @Html.DisplayFor(modelItem => item.Notes)
                                 </td>
                                 <td>
-                                    <a asp-controller="Animals" asp-action="Edit" asp-route-id="@item.AnimalId">Edit</a> |
-                                    <a asp-controller="Animals" asp-action="Delete" asp-route-id="@item.AnimalId">Delete</a>
+                                    <a asp-controller="ClientAnimals" asp-action="Edit" asp-route-id="@item.ClientAnimalId">Edit</a> |
+                                    <a asp-controller="ClientAnimals" asp-action="Delete" asp-route-id="@item.ClientAnimalId">Delete</a>
                                 </td>
                             </tr>
                         }
@@ -166,7 +166,7 @@
             {
                 <div class="alert alert-info">No pets on file for this client.</div>
             }
-        <div class="w-100 clearfix"><a class="btn btn-sm btn-primary float-right" asp-controller="Animals" asp-action="Create" asp-route-personid="@Model.PersonId"><i class="fas fa-plus pr-1"></i>Add</a></div>
+        <div class="w-100 clearfix"><a class="btn btn-sm btn-primary float-right" asp-controller="ClientAnimals" asp-action="Create" asp-route-personid="@Model.PersonId"><i class="fas fa-plus pr-1"></i>Add</a></div>
         </dd>
     </dl>
 </div>

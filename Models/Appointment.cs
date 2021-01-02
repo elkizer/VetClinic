@@ -9,8 +9,7 @@ namespace VetClinic.Models
     public class Appointment
     {
         public long AppointmentId { get; set; }
-        public long ClientId { get; set; }
-        public long AnimalId { get; set; }
+        public long ClientAnimalId { get; set; }
         public long EmployeeId { get; set; }
         
         [DataType(DataType.Date)]
@@ -19,8 +18,7 @@ namespace VetClinic.Models
         public DateTime AppointmentDate { get; set; }
         public string Reason { get; set; }
 
-        public virtual Client Client { get; set; }
-        public virtual Animal Animal { get; set; }
+        public virtual ClientAnimal ClientAnimal { get; set; }
         public virtual Employee Employee { get; set; }
     }
 }

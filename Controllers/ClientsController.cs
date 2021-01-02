@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VetClinic.Data;
 using VetClinic.Models;
-using VetClinic.ViewModels;
 
 namespace VetClinic.Controllers
 {
@@ -39,7 +38,6 @@ namespace VetClinic.Controllers
                 .Include(c => c.PersonPhones)
                 .Include(c => c.PersonEmails)
                 .Include(c => c.ClientAnimals)
-                    .ThenInclude(ca => ca.Animal)
                     .ThenInclude(sp => sp.Species)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.PersonId == id);
