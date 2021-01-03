@@ -20,10 +20,45 @@ namespace VetClinic.Controllers
         }
 
         // GET: Appointments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
-            var clinicContext = _context.Appointments.Include(a => a.Employee).Include(a => a.ClientAnimal).ThenInclude(a => a.Client);
-            return View(await clinicContext.ToListAsync());
+            ViewData["AppointmentDateSortParm"] = String.IsNullOrEmpty(sortOrder) ? "date_desc" : "";
+            ViewData["PetSortParm"] = sortOrder == "Pet" ? "pet_desc" : "Pet";
+            ViewData["ClientSortParm"] = sortOrder == "Client" ? "client_desc" : "Client";
+            ViewData["EmployeeSortParm"] = sortOrder == "Employee" ? "employee_desc" : "Employee";
+
+            var appointments = from a in _context.Appointments.Include(a => a.Employee).Include(a => a.ClientAnimal).ThenInclude(a => a.Client)
+                               select a;
+
+            switch (sortOrder)
+            {
+                case "date_desc":
+                    appointments = appointments.OrderByDescending(s => s.AppointmentDate);
+                    break;
+                case "pet_desc":
+                    appointments = appointments.OrderByDescending(s => s.ClientAnimal.Name);
+                    break;
+                case "Pet":
+                    appointments = appointments.OrderBy(s => s.ClientAnimal.Name);
+                    break;
+                case "client_desc":
+                    appointments = appointments.OrderByDescending(s => s.ClientAnimal.Client.LastName);
+                    break;
+                case "Client":
+                    appointments = appointments.OrderBy(s => s.ClientAnimal.Client.LastName);
+                    break;
+                case "employee_desc":
+                    appointments = appointments.OrderByDescending(s => s.Employee.LastName);
+                    break;
+                case "Employee":
+                    appointments = appointments.OrderBy(s => s.Employee.LastName);
+                    break;
+                default:
+                    appointments = appointments.OrderBy(a => a.AppointmentDate);
+                    break;
+            }
+
+            return View(await appointments.AsNoTracking().ToListAsync());
         }
 
         // GET: Appointments/Details/5
