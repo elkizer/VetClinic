@@ -12,8 +12,8 @@ namespace VetClinic.Models
         public long ClientAnimalId { get; set; }
         public long EmployeeId { get; set; }
         
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:f}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:g}", ApplyFormatInEditMode = true)]
         [Display(Name = "Appointment Date")]
         public DateTime AppointmentDate { get; set; }
         public string Reason { get; set; }

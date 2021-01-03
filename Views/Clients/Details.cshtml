@@ -56,75 +56,71 @@
             <div class="w-100 clearfix"><a class="btn btn-sm btn-primary float-right" asp-controller="Addresses" asp-action="Create" asp-route-personid="@Model.PersonId"><i class="fas fa-plus pr-1"></i>Add</a></div>
         </dd>
         <dt class="col-sm-2 mt-3">
-            @Html.DisplayNameFor(model => model.PersonPhones)
+            Contact Info
         </dt>
         <dd class="col-sm-10 mt-3">
             @if (Model.PersonPhones.Count > 0)
             {
-            <table class="table table-sm table-striped">
-                <thead>
-                    <tr>
-                        <th>Phone Number</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.PersonPhones)
-                    {
+                <table class="table table-sm table-striped">
+                    <thead>
                         <tr>
-                            <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
-                            <td>
-                                <a asp-controller="Phones" asp-action="Edit" asp-route-id="@item.PersonPhoneId">Edit</a> |
-                                <a asp-controller="Phones" asp-action="Delete" asp-route-id="@item.PersonPhoneId">Delete</a>
-                            </td>
+                            <th>Phone Number</th>
+                            <th></th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.PersonPhones)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                                <td>
+                                    <a asp-controller="Phones" asp-action="Edit" asp-route-id="@item.PersonPhoneId">Edit</a> |
+                                    <a asp-controller="Phones" asp-action="Delete" asp-route-id="@item.PersonPhoneId">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             }
             else
             {
                 <div class="alert alert-info">No phone numbers on file for this client.</div>
             }
-        <div class="w-100 clearfix"><a class="btn btn-sm btn-primary float-right" asp-controller="Phones" asp-action="Create" asp-route-personid="@Model.PersonId"><i class="fas fa-plus pr-1"></i>Add</a></div>
-        </dd>
-        <dt class="col-sm-2 mt-3">
-            @Html.DisplayNameFor(model => model.PersonEmails)
-        </dt>
-        <dd class="col-sm-10 mt-3">
+            <div class="w-100 clearfix"><a class="btn btn-sm btn-primary float-right" asp-controller="Phones" asp-action="Create" asp-route-personid="@Model.PersonId"><i class="fas fa-plus pr-1"></i>Add</a></div>
+
             @if (Model.PersonEmails.Count > 0)
             {
-            <table class="table table-sm table-striped">
-                <thead>
-                    <tr>
-                        <th>Email Addresses</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.PersonEmails)
-                    {
+                <table class="table table-sm table-striped mt-3">
+                    <thead>
                         <tr>
-                            <td>@Html.DisplayFor(modelItem => item.EmailAddress)</td>
-                            <td>
-                                <a asp-controller="Emails" asp-action="Edit" asp-route-id="@item.PersonEmailId">Edit</a> |
-                                <a asp-controller="Emails" asp-action="Delete" asp-route-id="@item.PersonEmailId">Delete</a>
-                            </td>
+                            <th>Email Addresses</th>
+                            <th></th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.PersonEmails)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.EmailAddress)</td>
+                                <td>
+                                    <a asp-controller="Emails" asp-action="Edit" asp-route-id="@item.PersonEmailId">Edit</a> |
+                                    <a asp-controller="Emails" asp-action="Delete" asp-route-id="@item.PersonEmailId">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             }
             else
             {
                 <div class="alert alert-info">No email addresses on file for this client.</div>
             }
-        <div class="w-100 clearfix"><a class="btn btn-sm btn-primary float-right" asp-controller="Emails" asp-action="Create" asp-route-personid="@Model.PersonId"><i class="fas fa-plus pr-1"></i>Add</a></div>
+            <div class="w-100 clearfix"><a class="btn btn-sm btn-primary float-right" asp-controller="Emails" asp-action="Create" asp-route-personid="@Model.PersonId"><i class="fas fa-plus pr-1"></i>Add</a></div>
         </dd>
-        <dt class="col-sm-2 mt-5">
+        <dt class="col-sm-2 mt-3">
             @Html.DisplayNameFor(model => model.ClientAnimals)
         </dt>
-        <dd class="col-sm-10 mt-5">
+        <dd class="col-sm-10 mt-3">
             @if (Model.ClientAnimals.Count() > 0)
             {
                 <table class="table table-sm table-striped">
