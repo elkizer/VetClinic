@@ -125,6 +125,21 @@ namespace VetClinic.Data
             }
             context.SaveChanges();
 
+            // Populate Appointments
+            var appointments = new Appointment[]
+            {
+                new Appointment{ClientAnimalId = pets.Single( p => p.Name == "Nash").ClientAnimalId, EmployeeId = employee.Single(e => e.LastName == "Palmer").PersonId, AppointmentDate = DateTime.Parse("2021-01-06 9:00"), Reason = "Ear cleaning"},
+                new Appointment{ClientAnimalId = pets.Single( p => p.Name == "Nash").ClientAnimalId, EmployeeId = employee.Single(e => e.LastName == "Sparks").PersonId, AppointmentDate = DateTime.Parse("2021-02-05 9:30"), Reason = "Immunization"},
+                new Appointment{ClientAnimalId = pets.Single( p => p.Name == "Kitty").ClientAnimalId, EmployeeId = employee.Single(e => e.LastName == "Sparks").PersonId, AppointmentDate = DateTime.Parse("2021-01-05 10:00"), Reason = "Immunization"},
+                new Appointment{ClientAnimalId = pets.Single( p => p.Name == "Henry").ClientAnimalId, EmployeeId = employee.Single(e => e.LastName == "Palmer").PersonId, AppointmentDate = DateTime.Parse("2021-01-07 14:00"), Reason = "Nail trim"},
+                new Appointment{ClientAnimalId = pets.Single( p => p.Name == "Mudge").ClientAnimalId, EmployeeId = employee.Single(e => e.LastName == "Palmer").PersonId, AppointmentDate = DateTime.Parse("2021-01-07 14:00"), Reason = "Nail trim"}
+            };
+            foreach (Appointment ap in appointments)
+            {
+                context.Appointments.Add(ap);
+            }
+            context.SaveChanges();
+
 
         }
     }
