@@ -72,11 +72,56 @@ namespace VetClinic.Data
             // Populate Addresses
             var addresses = new PersonAddress[]
             {
-                new PersonAddress{PersonId = clients.Single( c => c.LastName == "Kizer").PersonId, AddressLine1 = "123 Main St.", AddressLine2 = "Apt. B", City = "Towson", State = "MD", PostalCode = "21212"}
+                new PersonAddress{PersonId = clients.Single( c => c.LastName == "Bridges").PersonId, AddressLine1 = "22 West Blvd.", City = "Lutherville-Timonium", State = "MD", PostalCode = "21093"},
+                new PersonAddress{PersonId = clients.Single( c => c.LastName == "Kizer").PersonId, AddressLine1 = "123 Main St.", AddressLine2 = "Apt. B", City = "Towson", State = "MD", PostalCode = "21212"},
+                new PersonAddress{PersonId = clients.Single( c => c.LastName == "Doe").PersonId, AddressLine1 = "123 Main St.", AddressLine2 = "Apt. A", City = "Towson", State = "MD", PostalCode = "21212"},
+                new PersonAddress{PersonId = clients.Single( c => c.LastName == "Doe").PersonId, AddressLine1 = "999 South St.", City = "Bel Air", State = "MD", PostalCode = "21015"}
             };
             foreach (PersonAddress pa in addresses)
             {
                 context.PersonAddresses.Add(pa);
+            }
+            context.SaveChanges();
+
+            // Populate Phone Numbers
+            var phones = new PersonPhone[]
+            {
+                new PersonPhone{PersonId = clients.Single( c => c.LastName == "Bridges").PersonId, PhoneNumber = "410-123-1234"},
+                new PersonPhone{PersonId = clients.Single( c => c.LastName == "Bridges").PersonId, PhoneNumber = "410-123-4321"},
+                new PersonPhone{PersonId = clients.Single( c => c.LastName == "Kizer").PersonId, PhoneNumber = "410-456-1245"},
+                new PersonPhone{PersonId = clients.Single( c => c.LastName == "Doe").PersonId, PhoneNumber = "410-785-7845"}
+            };
+            foreach (PersonPhone pp in phones)
+            {
+                context.PersonPhones.Add(pp);
+            }
+            context.SaveChanges();
+
+            // Populate Emails
+            var emails = new PersonEmail[]
+            {
+                new PersonEmail{PersonId = clients.Single( c => c.LastName == "Bridges").PersonId, EmailAddress = "chelsea.bridges@test.com"},
+                new PersonEmail{PersonId = clients.Single( c => c.LastName == "Kizer").PersonId, EmailAddress = "rkizer@test.com"},
+                new PersonEmail{PersonId = clients.Single( c => c.LastName == "Doe").PersonId, EmailAddress = "john.doe@test.com"}
+            };
+            foreach (PersonEmail pe in emails)
+            {
+                context.PersonEmails.Add(pe);
+            }
+            context.SaveChanges();
+
+            // Populate Pets
+            var pets = new ClientAnimal[]
+            {
+                new ClientAnimal{ClientId = clients.Single( c => c.LastName == "Bridges").PersonId, Name = "Henry", BirthDate = DateTime.Parse("2018-08-01"), SpeciesId = species.Single(s => s.Code == "CANINE").SpeciesId},
+                new ClientAnimal{ClientId = clients.Single( c => c.LastName == "Bridges").PersonId, Name = "Mudge", BirthDate = DateTime.Parse("2016-07-11"), SpeciesId = species.Single(s => s.Code == "CANINE").SpeciesId},
+                new ClientAnimal{ClientId = clients.Single( c => c.LastName == "Bridges").PersonId, Name = "Kitty", BirthDate = DateTime.Parse("2019-06-2"), SpeciesId = species.Single(s => s.Code == "FELINE").SpeciesId},
+                new ClientAnimal{ClientId = clients.Single( c => c.LastName == "Kizer").PersonId, Name = "Nash", BirthDate = DateTime.Parse("2018-08-01"), SpeciesId = species.Single(s => s.Code == "CANINE").SpeciesId},
+                new ClientAnimal{ClientId = clients.Single( c => c.LastName == "Doe").PersonId, Name = "Fluffy II", BirthDate = DateTime.Parse("2018-08-01"), SpeciesId = species.Single(s => s.Code == "FELINE").SpeciesId}
+            };
+            foreach (ClientAnimal ca in pets)
+            {
+                context.ClientAnimals.Add(ca);
             }
             context.SaveChanges();
 
