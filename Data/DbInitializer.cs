@@ -43,12 +43,12 @@ namespace VetClinic.Data
             context.SaveChanges();
 
             // Populate Employees
-            var employee = new Employee[]
+            var employees = new Employee[]
             {
                 new Employee{FirstName = "Jeanne", LastName = "Sparks", EmployeeTypeId = employeeTypes.Single(ea => ea.Code == "VET").EmployeeTypeId, HireDate = DateTime.Parse("2018-08-01")},
                 new Employee{FirstName = "Jenny", LastName = "Palmer", EmployeeTypeId = employeeTypes.Single(ea => ea.Code == "TECH").EmployeeTypeId, HireDate = DateTime.Parse("2018-08-01")}
             };
-            foreach (Employee e in employee)
+            foreach (Employee e in employees)
             {
                 context.Employees.Add(e);
             }
@@ -75,7 +75,8 @@ namespace VetClinic.Data
                 new PersonAddress{PersonId = clients.Single( c => c.LastName == "Bridges").PersonId, AddressLine1 = "22 West Blvd.", City = "Lutherville-Timonium", State = "MD", PostalCode = "21093"},
                 new PersonAddress{PersonId = clients.Single( c => c.LastName == "Kizer").PersonId, AddressLine1 = "123 Main St.", AddressLine2 = "Apt. B", City = "Towson", State = "MD", PostalCode = "21212"},
                 new PersonAddress{PersonId = clients.Single( c => c.LastName == "Doe").PersonId, AddressLine1 = "123 Main St.", AddressLine2 = "Apt. A", City = "Towson", State = "MD", PostalCode = "21212"},
-                new PersonAddress{PersonId = clients.Single( c => c.LastName == "Doe").PersonId, AddressLine1 = "999 South St.", City = "Bel Air", State = "MD", PostalCode = "21015"}
+                new PersonAddress{PersonId = employees.Single( e => e.LastName == "Sparks").PersonId, AddressLine1 = "2525 Eastridge Rd.", City = "Lutherville-Timonium", State = "MD", PostalCode = "21093"},
+                new PersonAddress{PersonId = employees.Single( e => e.LastName == "Palmer").PersonId, AddressLine1 = "55 Westridge Rd.", City = "Lutherville-Timonium", State = "MD", PostalCode = "21093"}
             };
             foreach (PersonAddress pa in addresses)
             {
@@ -89,7 +90,9 @@ namespace VetClinic.Data
                 new PersonPhone{PersonId = clients.Single( c => c.LastName == "Bridges").PersonId, PhoneNumber = "410-123-1234"},
                 new PersonPhone{PersonId = clients.Single( c => c.LastName == "Bridges").PersonId, PhoneNumber = "410-123-4321"},
                 new PersonPhone{PersonId = clients.Single( c => c.LastName == "Kizer").PersonId, PhoneNumber = "410-456-1245"},
-                new PersonPhone{PersonId = clients.Single( c => c.LastName == "Doe").PersonId, PhoneNumber = "410-785-7845"}
+                new PersonPhone{PersonId = clients.Single( c => c.LastName == "Doe").PersonId, PhoneNumber = "410-785-7845"},
+                new PersonPhone{PersonId = employees.Single( e => e.LastName == "Sparks").PersonId, PhoneNumber = "410-894-8541"},
+                new PersonPhone{PersonId = employees.Single( e => e.LastName == "Palmer").PersonId, PhoneNumber = "410-785-7421"}
             };
             foreach (PersonPhone pp in phones)
             {
@@ -102,7 +105,9 @@ namespace VetClinic.Data
             {
                 new PersonEmail{PersonId = clients.Single( c => c.LastName == "Bridges").PersonId, EmailAddress = "chelsea.bridges@test.com"},
                 new PersonEmail{PersonId = clients.Single( c => c.LastName == "Kizer").PersonId, EmailAddress = "rkizer@test.com"},
-                new PersonEmail{PersonId = clients.Single( c => c.LastName == "Doe").PersonId, EmailAddress = "john.doe@test.com"}
+                new PersonEmail{PersonId = clients.Single( c => c.LastName == "Doe").PersonId, EmailAddress = "john.doe@test.com"},
+                new PersonEmail{PersonId = employees.Single( e => e.LastName == "Sparks").PersonId, EmailAddress = "jsparks@test.com"},
+                new PersonEmail{PersonId = employees.Single( e => e.LastName == "Palmer").PersonId, EmailAddress = "jpalmer@test.com"}
             };
             foreach (PersonEmail pe in emails)
             {
@@ -128,11 +133,11 @@ namespace VetClinic.Data
             // Populate Appointments
             var appointments = new Appointment[]
             {
-                new Appointment{ClientAnimalId = pets.Single( p => p.Name == "Nash").ClientAnimalId, EmployeeId = employee.Single(e => e.LastName == "Palmer").PersonId, AppointmentDate = DateTime.Parse("2021-01-06 9:00"), Reason = "Ear cleaning"},
-                new Appointment{ClientAnimalId = pets.Single( p => p.Name == "Nash").ClientAnimalId, EmployeeId = employee.Single(e => e.LastName == "Sparks").PersonId, AppointmentDate = DateTime.Parse("2021-02-05 9:30"), Reason = "Immunization"},
-                new Appointment{ClientAnimalId = pets.Single( p => p.Name == "Kitty").ClientAnimalId, EmployeeId = employee.Single(e => e.LastName == "Sparks").PersonId, AppointmentDate = DateTime.Parse("2021-01-05 10:00"), Reason = "Immunization"},
-                new Appointment{ClientAnimalId = pets.Single( p => p.Name == "Henry").ClientAnimalId, EmployeeId = employee.Single(e => e.LastName == "Palmer").PersonId, AppointmentDate = DateTime.Parse("2021-01-07 14:00"), Reason = "Nail trim"},
-                new Appointment{ClientAnimalId = pets.Single( p => p.Name == "Mudge").ClientAnimalId, EmployeeId = employee.Single(e => e.LastName == "Palmer").PersonId, AppointmentDate = DateTime.Parse("2021-01-07 14:00"), Reason = "Nail trim"}
+                new Appointment{ClientAnimalId = pets.Single( p => p.Name == "Nash").ClientAnimalId, EmployeeId = employees.Single(e => e.LastName == "Palmer").PersonId, AppointmentDate = DateTime.Parse("2021-01-06 9:00"), Reason = "Ear cleaning"},
+                new Appointment{ClientAnimalId = pets.Single( p => p.Name == "Nash").ClientAnimalId, EmployeeId = employees.Single(e => e.LastName == "Sparks").PersonId, AppointmentDate = DateTime.Parse("2021-02-05 9:30"), Reason = "Immunization"},
+                new Appointment{ClientAnimalId = pets.Single( p => p.Name == "Kitty").ClientAnimalId, EmployeeId = employees.Single(e => e.LastName == "Sparks").PersonId, AppointmentDate = DateTime.Parse("2021-01-05 10:00"), Reason = "Immunization"},
+                new Appointment{ClientAnimalId = pets.Single( p => p.Name == "Henry").ClientAnimalId, EmployeeId = employees.Single(e => e.LastName == "Palmer").PersonId, AppointmentDate = DateTime.Parse("2021-01-07 14:00"), Reason = "Nail trim"},
+                new Appointment{ClientAnimalId = pets.Single( p => p.Name == "Mudge").ClientAnimalId, EmployeeId = employees.Single(e => e.LastName == "Palmer").PersonId, AppointmentDate = DateTime.Parse("2021-01-07 14:00"), Reason = "Nail trim"}
             };
             foreach (Appointment ap in appointments)
             {
