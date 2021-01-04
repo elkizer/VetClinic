@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="EmployeeTypeId" class="control-label">Role</label>
-                <select asp-for="EmployeeTypeId" class="form-control" asp-items="ViewBag.EmployeeTypeDescription"></select>
+                <select asp-for="EmployeeTypeId" class="form-control" asp-items="ViewBag.EmployeeTypeId"></select>
                 <span asp-validation-for="EmployeeTypeId" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="PersonId" />

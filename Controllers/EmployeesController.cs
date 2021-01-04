@@ -51,7 +51,7 @@ namespace VetClinic.Controllers
         // GET: Employees/Create
         public IActionResult Create()
         {
-            ViewData["EmployeeTypeId"] = new SelectList(_context.EmployeeTypes, "EmployeeTypeId", "EmployeeTypeId");
+            ViewData["EmployeeTypeId"] = new SelectList(_context.EmployeeTypes, "EmployeeTypeId", "Name");
             return View();
         }
 
@@ -68,7 +68,7 @@ namespace VetClinic.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeTypeId"] = new SelectList(_context.EmployeeTypes, "EmployeeTypeId", "EmployeeTypeId", employee.EmployeeTypeId);
+            ViewData["EmployeeTypeId"] = new SelectList(_context.EmployeeTypes, "EmployeeTypeId", "Name", employee.EmployeeTypeId);
             return View(employee);
         }
 
@@ -85,7 +85,7 @@ namespace VetClinic.Controllers
             {
                 return NotFound();
             }
-            ViewData["EmployeeTypeId"] = new SelectList(_context.EmployeeTypes, "EmployeeTypeId", "EmployeeTypeId", employee.EmployeeTypeId);
+            ViewData["EmployeeTypeId"] = new SelectList(_context.EmployeeTypes, "EmployeeTypeId", "Name", employee.EmployeeTypeId);
             return View(employee);
         }
 
